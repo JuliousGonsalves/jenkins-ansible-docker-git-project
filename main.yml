@@ -1,0 +1,137 @@
+---
+
+- name: "Building docker image on a build serveri using git repo"
+  hosts: buildserver
+  become: true
+  vars_files:
+    - packagevariable.yml
+    - variables.yml
+
+  tasks:
+
+    - name: "Installing docker, Git and pip - BuildServer"
+      yum:
+        name: "{{packages}}"
+        state: present
+
+    - name: "Adding ec2-user to docker group - BuildServer"
+      user:
+        name: "ec2-user"
+        groups:
+          - docker
+        append: yes
+
+    - name: "Installing docker-py python pacakge for docker using pip -BuildServer"
+      pip:
+        name: docker-py
+
+    - name: "Starting/Enabling Docker service - BuildServer"
+      service:
+        name: "docker"
+        state: restarted
+        enabled: true
+
+    - name: "Cloning image using git to {{clone_directory}} - BuildServer"
+      git:
+        repo: "{{git_repo_url}}"
+        dest: "{{clone_directory}}"
+      register: cloning_status
+
+    - debug:
+        msg: "{{cloning_status}}"
+
+
+    - name: "Login to dockerHub - BuildServer"
+      when: cloning_status.changed == true
+      docker_login:
+        username: "{{docker_login_user}}"
+        password: "{{docker_login_pass}}"
+        state: present
+
+    - name: "Creating Docker image and pushing to docker hub - BuildServer"
+      when: cloning_status.changed == true
+      docker_image:
+        source: build
+        build:
+          path: "{{clone_directory}}"
+          pull: yes
+        name: "{{docker_image}}"
+        tag: "{{item}}"
+        push: yes
+        force_tag: yes
+        force_source: yes
+      with_items:
+        - "{{cloning_status.after}}"
+        - latest
+
+    - name: "Removing the image from local sytem"
+      when: cloning_status.changed == true
+      docker_image:
+        state: absent
+        name: "{{docker_image}}"
+        tag: "{{item}}"
+      with_items:
+        - "{{cloning_status.after}}"
+        - latest
+
+    - name: "Logout to dockerHub - BuildServer"
+      when: cloning_status.changed == true
+      docker_login:
+        username: "{{docker_login_user}}"
+        password: "{{docker_login_pass}}"
+        state: absent
+
+
+
+- name: "Running container on Test Instance"
+  become: true
+  hosts: testserver
+  vars:
+    packages :
+      - docker
+      - pip
+    docker_image: "juliousgonsalves/flaskapplication"
+  tasks:
+
+    - name: "Installing docker and  pip module in test server"
+      yum:
+        name: "{{packages}}"
+        state: present
+
+    - name: "Adding ec2-user to docker group - test Server"
+      user:
+        name: "ec2-user"
+        groups:
+          - docker
+        append: yes
+
+    - name: "Installing docker-py python pacakge for docker using pip -test Server"
+      pip:
+        name: docker-py
+
+    - name: "Starting/Enabling Docker service - test Server"
+      service:
+        name: "docker"
+        state: restarted
+        enabled: true
+
+
+    - name: "pulling image to test server"
+      docker_image:
+        name: "{{docker_image}}"
+        source: pull
+        force_source: yes
+      register: dockerimage_status
+
+    - debug:
+        msg: "{{dockerimage_status}}"
+
+    - name: "running container in test server"
+      when: dockerimage_status.changed == true
+      docker_container:
+        name: flaskapplicaton
+        image: "{{docker_image}}:latest"
+        recreate: yes
+        pull: yes
+        published_ports:
+          - "80:8080"

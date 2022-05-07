@@ -1,0 +1,6 @@
+[buildserver]
+172.31.13.7 ansible_user="ec2-user" 
+
+
+[testserver]
+172.31.4.79 ansible_user="ec2-user" 
