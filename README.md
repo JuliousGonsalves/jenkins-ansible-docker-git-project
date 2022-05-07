@@ -25,6 +25,13 @@ After the instalation, we can test the jenkins using the below port:
 ~~~sh
 http://3.110.194.33:8080/   //provide your jenkins server Public IP
 ~~~
+~~~sh
+# vim /var/deployment/hosts
+# chmod o=--- /var/deployment/
+# chown jenkins /var/deployment/
+# ls -ld /var/deployment/
+# drwxr-x--- 2 jenkins root 35 Mar 10 11:31 /var/deployment/
+~~~
 
 ## Ansible Inventory file
 ~~~sh
@@ -208,6 +215,11 @@ ansible-vault encrypt /var/deployment/variables.yml
 New Vault password:
 Confirm New Vault password:
 Encryption successful
+
+# ls -l /var/deployment/
+-rw-r--r-- 1 root root    96 Mar 10 11:31 hosts
+-rw------- 1 root root 16490 Mar 10 11:35 main.yml
+# chmod 644 /var/deployment/main.yml
 ~~~
 
 ## Configuring Jenkins
