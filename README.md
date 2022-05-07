@@ -219,7 +219,7 @@ Encryption successful
 # ls -l /var/deployment/
 -rw-r--r-- 1 root root    96 Mar 10 11:31 hosts
 -rw------- 1 root root 16490 Mar 10 11:35 main.yml
-# chmod 644 /var/deployment/main.yml
+# chmod 644 /var/deployment/main.yml  // to correct permission
 ~~~
 
 ## Configuring Jenkins
