@@ -238,11 +238,13 @@ Encryption successful
 6. To create  a job
 
    New item >> Enter Item Name >> Freestyle Project >> OK
+   
+   ![freestyle](https://user-images.githubusercontent.com/98936958/167253939-8ac88f71-cd3f-4e28-88b0-ea7ea57cef8c.PNG)
 
    Add a decription  "Docker Image Build and test project" >> Source Code Management select Git and add repo url  >> Under Build, choose 
-   "Invoke ansible Playbook", then add Playbook path "/root/ansible-project/playbook.yml".
+   "Invoke ansible Playbook", then add Playbook path "/var/deployment/main.yml".
 
-   Add Inventory >> File or host list >> File path or comma separated host list "/root/ansible-project/hosts"
+   Add Inventory >> File or host list >> File path or comma separated host list "/var/deployment/hosts"
 
    Under advanced section, make sure Disable the host SSH key check is disabled.
 
@@ -254,7 +256,9 @@ Encryption successful
 8. Add ssh details in Credentials.
 
   ![sshdetails](https://user-images.githubusercontent.com/98936958/167253773-fc975685-d330-4f10-aaad-55f050cecd90.PNG)
-
+  
+  Add Kind as "SSH username / private key"  , User name "ec2-user" and private key "you ssh pem file"
+  
   ![sshkey](https://user-images.githubusercontent.com/98936958/167253775-bdbda71d-ab9b-457c-a913-48027422047b.PNG)
 
 
