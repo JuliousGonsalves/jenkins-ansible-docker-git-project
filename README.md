@@ -1,3 +1,4 @@
+
 # jenkins-ansible-docker-git-project
 This is a DevOps jenkins freestyle project using Git, Jenkins, Ansible and Docker on AWS for deploying a python-flask application in a Docker container.The process should be initiated from a new commit to a specific branch of a GitHub repository. This event kicks off a process that begins building the Docker image. Jenkins supports this event-driven flow using the “GitHub hook trigger for GITScm polling".
 
@@ -252,8 +253,10 @@ Encryption successful
 
 8. Add ssh details in Credentials.
 
+  ![sshdetails](https://user-images.githubusercontent.com/98936958/167253773-fc975685-d330-4f10-aaad-55f050cecd90.PNG)
 
-
+  ![sshkey](https://user-images.githubusercontent.com/98936958/167253775-bdbda71d-ab9b-457c-a913-48027422047b.PNG)
 
 
 ![finaloupt](https://user-images.githubusercontent.com/98936958/167253094-950fc795-4eb6-4e0a-ada6-c78f6bb11685.PNG)
+
