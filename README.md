@@ -261,6 +261,30 @@ Encryption successful
   
   ![sshkey](https://user-images.githubusercontent.com/98936958/167253775-bdbda71d-ab9b-457c-a913-48027422047b.PNG)
 
+9. Manually run Jenkins Job and verify it is working fine. Ie, Select Job and click on "Build now"
+
+   ![manually](https://user-images.githubusercontent.com/98936958/167254110-08267cf3-3fda-45ce-b160-8cd5a0b56cb6.PNG)
+
+## Automating the build and test process using git hub hooks
+
+   In order to do this we need to configure jenkins payload url in Git repository
+
+1. Go to your Git repo , under security >> choose Webhooks
+
+   ![webhook](https://user-images.githubusercontent.com/98936958/167254245-38c90d90-6f11-49c3-acdc-5ecc10f40e6a.PNG)
+
+2. Acces your Jenkin Admin dashboard >> Select your Jon and click on "Configure" and select "GitHub hook trigger for GITScm polling"
+
+  ![buildgit](https://user-images.githubusercontent.com/98936958/167254309-5efb73ad-da4a-437b-a952-dba884587045.PNG)
+
+
+# Result
+
+Once the developer make changes in git repo, An alert is triggered based on it Jenkins run the job.
+ie A new image is pushed to Docker Hub from the 'Build' host, which is pulled by 'Test' host to create a Docker Container.
 
 ![finaloupt](https://user-images.githubusercontent.com/98936958/167253094-950fc795-4eb6-4e0a-ada6-c78f6bb11685.PNG)
+
+
+
 
